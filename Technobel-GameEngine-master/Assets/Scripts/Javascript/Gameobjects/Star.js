@@ -251,6 +251,7 @@ function Star(x, y) {
 			this.Physics.Collider.position.y -= 10;
 			this.hitbox.y -= 10;
 
+			// collide with bug
 			for (var i = 0; i < Application.LoadedScene.GameObjects.length; i++) {
 
 				if (Application.LoadedScene.GameObjects[i].name == "bug") {
@@ -261,6 +262,13 @@ function Star(x, y) {
 						Application.LoadedScene.GameObjects.splice(Application.LoadedScene.GameObjects.indexOf(this),1);
 					}
 				}
+			}
+
+			// out of range
+			if (this.Physics.Collider.position.x > canvas.width ||
+				this.Physics.Collider.position.y > canvas.height || this.Physics.Collider.position.x < 0 ||
+				this.Physics.Collider.position.y < 0 ) {
+				Application.LoadedScene.GameObjects.splice(Application.LoadedScene.GameObjects.indexOf(this),1);
 			}
 
 			this.Renderer.Draw();

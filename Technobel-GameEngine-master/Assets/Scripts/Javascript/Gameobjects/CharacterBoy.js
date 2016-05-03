@@ -233,7 +233,7 @@ function CharacterBoy() {
 
 			// operation start
 			this.Renderer.Material.Source = Images["Character Boy"];
-			this.Transform.position = {x: 0, y: 600};
+			this.Transform.position = {x: canvas.width/2, y: 600};
 			this.Transform.size = {x: 101 ,y: 171};
 			this.Transform.scale = {x: .5, y: .5};
 			this.Physics.Collider.position = {x: this.Transform.position.x + 18, y: this.Transform.position.y + 40};

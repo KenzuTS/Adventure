@@ -133,7 +133,7 @@
 *	Add NameOfYourGameObject.Start() in your scene.
 */
 
-function Bug() {
+function Bug(x) {
 	this.name = "bug";
 	this.enabled = true;
 	this.started = false;
@@ -232,7 +232,7 @@ function Bug() {
 
 			// operation start
 			this.Renderer.Material.Source = Images["Enemy Bug"];
-			this.Transform.position = {x: 200, y: 100};
+			this.Transform.position = {x: x, y: 0};
 			this.Transform.size = {x: 101 ,y: 171};
 			this.Transform.scale = {x: .5, y: .5};
 			this.Physics.Collider.position = {x: this.Transform.position.x + 2, y: this.Transform.position.y + 40};
@@ -247,6 +247,9 @@ function Bug() {
 	this.Update = function() {
 		if ( this.enabled ) {
 
+			this.Transform.position.y += 3;
+			this.Physics.Collider.position.y += 3;
+			this.hitbox.y += 3;
 			this.Renderer.Draw();
 		}
 

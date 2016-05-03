@@ -43,6 +43,9 @@ function SceneGame() {
 	this.name = "SceneGame";
 	this.GameObjects = [];
 
+	this.rnd = 0;
+	this.timer = 0;
+
 	this.started = false;
 
 	this.Awake = function() {
@@ -55,10 +58,10 @@ function SceneGame() {
 			Time.SetTimeWhenSceneBegin();
 
 			// operation start
+			this.timer = 20;
 			var boy = new CharacterBoy();
 			var key = new Key();
-			var bug = new Bug();
-			this.GameObjects.push(key, bug, boy);
+			this.GameObjects.push(boy);
 
 			this.started = true;
 			console.log('%c System:Scene ' + this.name + " Started !", 'background:#222; color:yellow');
@@ -80,9 +83,18 @@ function SceneGame() {
 
 			//ctx.drawImage(Images["Star"], 0, 0, 101*0.5, 171*0.5);
 
+			if (this.timer == 0) {
+				this.timer = 30;
+				this.rnd = Math.Random.RangeInt(0, canvas.width, false);
+				var bug = new Bug(this.rnd);
+				this.GameObjects.push(bug);
+			}
+
 			for (var i = 0; i < this.GameObjects.length; i++) {
 				this.GameObjects[i].Start();
 			}
+
+			this.timer--;
 		}
 		this.GUI();
 	}
