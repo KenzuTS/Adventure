@@ -133,11 +133,13 @@
 *	Add NameOfYourGameObject.Start() in your scene.
 */
 
-function GameObject() {
-	this.name = "Model";
+function Star(x, y) {
+	this.name = "star";
 	this.enabled = true;
 	this.started = false;
 	this.rendered = true;
+
+	this.hitbox = {};
 	
 	this.Transform = {};
 	this.Transform.position = new Vector();
@@ -227,8 +229,16 @@ function GameObject() {
 	};
 	this.Start = function() {
 		if (!this.started) {
-			// operation start
 
+			// operation start
+			this.Renderer.Material.Source = Images["Star"];
+			this.Transform.position = {x: x, y: y};
+			this.Transform.size = {x: 101 ,y: 171};
+			this.Transform.scale = {x: .5, y: .5};
+			this.Physics.Collider.position = {x: this.Transform.position.x + 10, y: this.Transform.position.y + 35};
+			this.Physics.Collider.size = {x: 31, y: 31};
+			this.hitbox = new Box(this.Physics.Collider.position.x, this.Physics.Collider.position.y, this.Physics.Collider.size.x, this.Physics.Collider.size.y);
+			console.log(this.hitbox);
 			this.started = true;
 			console.log('%c System:GameObject ' + this.name + " Started !", 'background:#222; color:#bada55');
 		}
@@ -237,11 +247,43 @@ function GameObject() {
 	this.Update = function() {
 		if ( this.enabled ) {
 
+			this.Transform.position.y -= 10;
+			this.Physics.Collider.position.y -= 10;
+			this.hitbox.y -= 10;
+
+			for (var i = 0; i < Application.LoadedScene.GameObjects.length; i++) {
+
+				if (Application.LoadedScene.GameObjects[i].name == "bug") {
+
+					if ( Physics.BoxBoxCollision(this.hitbox, Application.LoadedScene.GameObjects[i].hitbox) ) {						
+
+						Application.LoadedScene.GameObjects.splice(i,1);
+						Application.LoadedScene.GameObjects.splice(Application.LoadedScene.GameObjects.indexOf(this),1);
+					}
+				}
+			}
+
+			this.Renderer.Draw();
 		}
+
 		this.GUI();	
 	};
 	this.GUI = function() {
-		
+		if (Application.debugMode) {
+			// box collider
+			ctx.beginPath();
+			ctx.rect(this.Physics.Collider.position.x, this.Physics.Collider.position.y, this.Physics.Collider.size.x, this.Physics.Collider.size.y);
+			ctx.fillStyle = Debug.ColliderColor;
+			ctx.fill();
+			ctx.closePath();
+
+			//sprite size
+			ctx.beginPath();
+			ctx.rect(this.Transform.position.x, this.Transform.position.y, this.Transform.size.x * this.Transform.scale.x, this.Transform.size.y * this.Transform.scale.y);
+			ctx.strokeStyle = Debug.SpriteOutlineColor;
+			ctx.stroke();
+			ctx.closePath();			
+		}
 	}
 	this.onHover = function() {
 		this.Physics.countHovered ++;

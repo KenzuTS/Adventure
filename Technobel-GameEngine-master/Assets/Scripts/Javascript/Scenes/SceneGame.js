@@ -39,51 +39,58 @@
 *
 *	To load your scene, use this instruction: "Application.LoadLevel(LevelName)".
 */
-function Loader() {
-	this.name = "Loader";
-	this.GameObjects =[];
+function SceneGame() {
+	this.name = "SceneGame";
+	this.GameObjects = [];
 
 	this.started = false;
-	this.ImagesLoaded = 0;
-	this.logo = new Image();
-	this.logo.src = "Assets/Graphics/Logos/logo_technobel.png";
 
 	this.Awake = function() {
-		//console.clear();
-		console.log('%c System:Scene ' + this.name + " Created !", 'background:#222; color:#bada55');
+		console.clear();
+		console.log('%c System:Scene ' + this.name + " Created !", 'background:#222; color:yellow');
+
 	}
 	this.Start = function() {
 		if (!this.started) {
-			Time.SetTimeWhenGameBegin();
+			Time.SetTimeWhenSceneBegin();
 
 			// operation start
+			var boy = new CharacterBoy();
+			var key = new Key();
+			var bug = new Bug();
+			this.GameObjects.push(key, bug, boy);
 
-			LoadImages();
 			this.started = true;
-			console.log('%c System:Scene ' + this.name + " Started !", 'background:#222; color:#bada55');
-			Time.SetTimeWhenGameLoaded();
+			console.log('%c System:Scene ' + this.name + " Started !", 'background:#222; color:yellow');
+			Time.SetTimeWhenSceneLoaded();
 		}
 		this.Update();
 	}
 	this.Update = function() {
-			ctx.fillStyle = "rgb(230, 230, 230)";
+		if (!Application.GamePaused) {
+			ctx.fillStyle = "rgb(50, 50, 50)";
 			ctx.fillRect(0,0, canvas.width, canvas.height);
-			ctx.drawImage(this.logo, canvas.width * .5 - this.logo.width *.5, canvas.height *.3);
-			for (var i = 0; i < this.GameObjects.length; i++) {
-				//this.GameObjects[i].Start();
+
+			// background
+			for (var j = 0; j < 17; j++) {
+				for (var i = 0; i < 21; i++) {				
+					ctx.drawImage(Images["Grass Block"], i*50, j*40, 50, 85);
+				}
 			}
+
+			//ctx.drawImage(Images["Star"], 0, 0, 101*0.5, 171*0.5);
+
+			for (var i = 0; i < this.GameObjects.length; i++) {
+				this.GameObjects[i].Start();
+			}
+		}
 		this.GUI();
 	}
 	this.GUI = function() {
-			ctx.strokeStyle = "grey";
-			ctx.strokeRect( canvas.width / 2 - 200, 500, 400, 20);
-			ctx.fillStyle = "grey";
-			var portion = 400 / ImagesPath.length;
-			ctx.RoundedBox( canvas.width / 2 - 198, 503, this.ImagesLoaded * portion - 4, 15, 6);
-		
-		if(Application.debugMode)
-		{
-			//Debug.debugScene();
+		if (!Application.GamePaused) {
+			//Show UI
+		} else {
+			// Show pause menu
 		}
 	}
 

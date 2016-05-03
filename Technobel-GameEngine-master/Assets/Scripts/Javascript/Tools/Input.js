@@ -2,7 +2,7 @@ var Input = {
 	KeysDown: [],
 	MousePosition: new Vector(),
 	KeyDown: function(e) {
-		e.preventDefault();
+		//e.preventDefault();
 		e.stopPropagation();
 		Input.KeysDown[e.keyCode] = true;
 	},
@@ -26,4 +26,4 @@ var Input = {
 		Input.MouseDraging = false;
 		Input.MouseDraggedElement = null;
 	}
-}
+};

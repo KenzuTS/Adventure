@@ -133,11 +133,13 @@
 *	Add NameOfYourGameObject.Start() in your scene.
 */
 
-function GameObject() {
-	this.name = "Model";
+function Bug() {
+	this.name = "bug";
 	this.enabled = true;
 	this.started = false;
 	this.rendered = true;
+
+	this.hitbox = {};
 	
 	this.Transform = {};
 	this.Transform.position = new Vector();
@@ -227,7 +229,15 @@ function GameObject() {
 	};
 	this.Start = function() {
 		if (!this.started) {
+
 			// operation start
+			this.Renderer.Material.Source = Images["Enemy Bug"];
+			this.Transform.position = {x: 200, y: 100};
+			this.Transform.size = {x: 101 ,y: 171};
+			this.Transform.scale = {x: .5, y: .5};
+			this.Physics.Collider.position = {x: this.Transform.position.x + 2, y: this.Transform.position.y + 40};
+			this.Physics.Collider.size = {x: 45, y: 30};
+			this.hitbox = new Box(this.Physics.Collider.position.x, this.Physics.Collider.position.y, this.Physics.Collider.size.x, this.Physics.Collider.size.y);
 
 			this.started = true;
 			console.log('%c System:GameObject ' + this.name + " Started !", 'background:#222; color:#bada55');
@@ -237,11 +247,27 @@ function GameObject() {
 	this.Update = function() {
 		if ( this.enabled ) {
 
+			this.Renderer.Draw();
 		}
+
 		this.GUI();	
 	};
 	this.GUI = function() {
-		
+		if (Application.debugMode) {
+			// box collider
+			ctx.beginPath();
+			ctx.rect(this.Physics.Collider.position.x, this.Physics.Collider.position.y, this.Physics.Collider.size.x, this.Physics.Collider.size.y);
+			ctx.fillStyle = Debug.ColliderColor;
+			ctx.fill();
+			ctx.closePath();
+
+			//sprite size
+			ctx.beginPath();
+			ctx.rect(this.Transform.position.x, this.Transform.position.y, this.Transform.size.x * this.Transform.scale.x, this.Transform.size.y * this.Transform.scale.y);
+			ctx.strokeStyle = Debug.SpriteOutlineColor;
+			ctx.stroke();
+			ctx.closePath();			
+		}
 	}
 	this.onHover = function() {
 		this.Physics.countHovered ++;

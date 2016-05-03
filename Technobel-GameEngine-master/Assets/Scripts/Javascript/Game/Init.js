@@ -38,9 +38,10 @@ function LoadImages() {
 		Images[name] = new Image();
 		Images[name].src = "Assets/Graphics/" + ImagesPath[i].path;
 		Images[name].onload = function() {
-			ImagesLoaded ++;
-			Scenes.loader.imageLoaded = imageLoaded;
-			// Scene.loader.imageLoaded = count
+			// ImagesLoaded ++;
+			count++;
+			// Scenes.loader.imageLoaded = imageLoaded;
+			Scenes.Loader.ImagesLoaded = count;
 			if (count == ImagesPath.length) {
 				// All Image are Loaded
 				ImageLoaded(count);
@@ -48,9 +49,11 @@ function LoadImages() {
 		}
 	}
 }
+
 function ImageLoaded(imageLoaded) {
 	console.log('%c System: ' + imageLoaded + " Loaded !", 'background:#222; color:#10ADED');
+	Scenes["SceneGame"] = new SceneGame();
+	Application.LoadedScene = Scenes["SceneGame"];
 }
-
 
 Run();

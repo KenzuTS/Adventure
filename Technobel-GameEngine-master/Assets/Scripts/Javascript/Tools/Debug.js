@@ -19,7 +19,7 @@
 
 var Debug = {
 	SpriteOutlineColor: "grey",
-	ColliderColor: "green",
+	ColliderColor: "rgba(0,255,0,0.5)",
 
 	Break: function() { debugger; },
 	Log: function(logMsg)	{console.log(logMsg);},
